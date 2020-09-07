@@ -9,7 +9,13 @@ let tree = {
         { 
           label: 'item2.1111',
           nodes: [
-            { label: 'item2.222'},
+            { 
+              label: 'item2.222',
+              nodes: [
+                {label: 'item2.5'},
+                {label: 'item2.6'}
+              ]
+            },
             { label: 'empty'}
           ]
         },
