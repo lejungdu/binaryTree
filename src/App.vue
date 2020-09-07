@@ -24,21 +24,33 @@ export default {
   data: function() {
     return{
       tree: tree,
-      path: []
+      path: [],
+      historyPath: []
     }
   },
   computed: {
     ...mapGetters(['nodeSelected']),
-    displayPath: function(){ return this.path.join(" > ")},
+    displayPath: function(){ return this.historyPath.join(" > ")},
   },
   watch:{ 
     nodeSelected: function(val){ this.findTarget(this.tree, val) },
-    path: function(){this.updateTree()},
+    path: function(){
+      this.updateTree()
+      this.recordPath()
+    },
   },
   updated(){
 
   },
   methods: {
+    recordPath(){
+      if(this.historyPath === []){ this.historyPath = this.path }
+      else{
+        for(let i=0; i<this.path.length; i++){ 
+          if(this.historyPath.indexOf(this.path[i]) === -1){this.historyPath.push(this.path[i])}
+        }
+      }
+    },
     updateTree(){
       var currentNode = this.tree
       var n = 1
