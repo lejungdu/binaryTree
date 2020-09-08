@@ -1,57 +1,66 @@
 let tree = {
-  label: 'root',
+  name: 'root',
+  number: 12345,
   job: 'manager',
   nodes: [
     { 
-      label: 'item2',
+      name: 'item2',
+      number: 12345,
       job: 'group leader',
       nodes: [
         { 
-          label: 'item2.1111',
+          name: 'item2.1111',
+          number: 12345,
           nodes: [
             { 
-              label: 'item2.222',
+              name: 'item2.222',
+              number: 12345,
               nodes: [
-                {label: 'item2.5'},
-                {label: 'item2.6'}
+                {name: 'item2.5', number: 12345,},
+                {name: 'item2.6', number: 12345,}
               ]
             },
-            { label: 'empty'}
+            { name: 'empty'}
           ]
         },
         {
-          label: 'item2.222222222222222',
+          name: 'item2.222',
+          number: 12345,
           nodes: [
-            { label: 'item2.3'},
-            { label: 'item2.4'}
+            { name: 'item2.3', number: 12345,},
+            { name: 'item2.4', number: 12345,}
           ]
         }
       ]
     },
     { 
-      label: 'item5',
+      name: 'item5',
+      number: 12345,
       job: 'group leader', 
       nodes: [
         {
-          label: 'item5.1',
+          name: 'item5.1',
+          number: 12345,
           nodes: [
-            { label: 'item5.11'},
-            { label: 'item5.13',
+            { name: 'item5.11', number: 12345,},
+            { name: 'item5.13', number: 12345,
               nodes: [
                 {
-                  label: 'random guy',
+                  name: 'random',
+                  number: 12345,
                   nodes: [
                     {
-                      label: 'random guy #2'
+                      name: 'random#2',
+                      number: 12345,
                     }
                   ]
                 },
-                { label: 'empty' }
+                { name: 'empty' }
               ]
             }
           ]
         },
-        { label: 'empty'}
+        { name: 'empty'}
       ]
     },
   ]

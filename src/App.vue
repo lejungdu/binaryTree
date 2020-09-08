@@ -5,14 +5,17 @@
         :data='tree'
         :depth=1
         :show=true
+        :userList='userList'
       />
     </div>
     <div class="displayPath">{{displayPath}}</div>
+    <div class="zoomTool">ZOOM IN/OUT</div>
   </div>
 </template>
 
 <script>
 import tree from './tree'
+import userList from './userList'
 import TableTree from './components/TableTree'
 import { mapGetters } from 'vuex'
 
@@ -24,6 +27,7 @@ export default {
   data: function() {
     return{
       tree: tree,
+      userList: userList,
       path: [],
       historyPath: []
     }
@@ -56,7 +60,7 @@ export default {
       var n = 1
 
       while(this.path.length > n){ 
-        var index = currentNode.nodes.findIndex(item => item.label === this.path[n])
+        var index = currentNode.nodes.findIndex(item => item.name === this.path[n])
         currentNode = currentNode.nodes[index]
         n++
       }
@@ -66,8 +70,8 @@ export default {
     },
     findTarget(data, value){
       var arr = []
-      arr.push(data.label)
-      if(data.label === value){
+      arr.push(data.name)
+      if(data.name === value){
         console.log(arr)
         this.path = arr
       }
@@ -80,8 +84,8 @@ export default {
       }
     },
     recursiveFind(data, arr, value){
-      arr.push(data.label)
-      if(data.label === value){
+      arr.push(data.name)
+      if(data.name === value){
         console.log(arr)
         this.path = arr
       }
@@ -110,7 +114,6 @@ export default {
   transform: translate(-50%, -50%); 
   width: 1000px;
   height: 800px;
-  border: 1px solid pink
 }
 .mainContainer{
   position: absolute;
@@ -123,5 +126,11 @@ export default {
   position: absolute;
   left: 0%;
   top: 0%
+}
+
+.zoomTool {
+  position: absolute;
+  bottom: 0%;
+  right: 0%;
 }
 </style>
