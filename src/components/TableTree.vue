@@ -8,8 +8,8 @@
                         <span>昇格まで A 14人 B 25人</span>
                     </div>
                     <div class="topLevel" >
-                        <div class="name">名{{data.name}}</div>
-                        <div class="number">番号{{data.number}}</div>
+                        <div class="name">名<span>{{data.name}}</span></div>
+                        <div class="number">番号<span>{{data.number}}</span></div>
                     </div>
                     <div class="midLevel">
                         <div class="leftSide">
@@ -55,14 +55,14 @@
             </tr>
             <tr>
                 <td class="rightLine"></td>
-                <template v-for="node in (data.nodes.length-1)">
-                    <td class="leftLine topLine"  :key='node.name'></td>
-                    <td class="rightLine topLine" :key='node.name'></td>
+                <template v-for="(node, index) in (data.nodes.length-1)">
+                    <td class="leftLine topLine"  :key='index+10'></td>
+                    <td class="rightLine topLine" :key='index+11'></td>
                 </template>
                 <td class="leftLine"></td>
             </tr>
             <tr>
-                <td colspan="2" v-for='node in data.nodes' :key='node.name'>
+                <td colspan="2" v-for='(node, index) in data.nodes' :key='index+12'>
                     <TableTree  :data='node' :depth='countDepth' :show='showChildren' :userList='userList' />
                 </td>
             </tr>
@@ -96,7 +96,7 @@ export default {
 
 <style scoped>
 
-/* start code for general chart layout */
+/* CSS for general chart layout */
 
 .orgChart {
     box-sizing: border-box;
@@ -122,18 +122,15 @@ export default {
     width: 200px;
     height: 230px;
     border: 1px solid black;
+    cursor: pointer;
+    transition: 0.5s;
 }
 
 .orgChart .node:hover {
     background-color: rgba(238, 217, 54, 0.5);
-    transition: 0.5s;
-    cursor: pointer;
-    z-index: 20;
 }
 
-/* end code for general chart layout */
-
-/* start code for node internal layout */
+/* CSS for node internal layout */
 
 /* topLevel layout */
 .orgChart .node .title {
@@ -158,12 +155,15 @@ export default {
 .orgChart .node .topLevel .name {
     display: inline-block;
     margin-right: 5px;
-
 }
 
 .orgChart .node .topLevel .number {
     display: inline-block;
     margin-left: 5px;
+}
+
+.orgChart .node .topLevel span {
+    color: blue;
 }
 
 /* midLevel layout */
@@ -184,12 +184,20 @@ export default {
     width: 50%;
 }
 
+.orgChart .node .midLevel .leftSide .people, .rightSide .people {
+    color: blue;
+}
+
 .orgChart .node .midLevel .leftSide .category, .leftSide .amount {
     text-align: left;
 }
 
 .orgChart .node .midLevel .rightSide .category, .rightSide .amount {
     text-align: right;
+}
+
+.orgChart .node .midLevel .leftSide div:nth-child(4), .rightSide div:nth-child(4){
+    color: blue;
 }
 
 /* bottomLevel layout */
@@ -206,6 +214,7 @@ export default {
     width: 50%;
     text-align: left;
     padding-left: 2px;
+    color: blue;
 }
 
 /* empty node layout */
@@ -231,9 +240,7 @@ export default {
     transform: translate(-50%, -50%);
 }
 
-/* end code for node internal layout */
-
-/* star code for drawing connecting lines */
+/* CSS drawing connecting lines between nodes */
 
 .orgChart tr:nth-child(3) td {
   box-sizing: border-box;

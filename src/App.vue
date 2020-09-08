@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <div class='mainContainer'>
+    <div class='mainContainer' :style="zoomScale">
       <TableTree 
         :data='tree'
         :depth=1
@@ -8,8 +8,15 @@
         :userList='userList'
       />
     </div>
-    <div class="displayPath">{{displayPath}}</div>
-    <div class="zoomTool">ZOOM IN/OUT</div>
+    <div class="displayPath">
+      <span class="pathStep" v-for="(item, index) in historyPath" :key="index">
+        {{ item }}
+      </span>
+    </div>
+    <div class="zoomTool">
+      <div class="title">ZOOM Control</div>
+      <div class="control"><span @click="zoomIn">-</span><span @click="zoomOut">+</span></div>
+    </div>
   </div>
 </template>
 
@@ -29,12 +36,14 @@ export default {
       tree: tree,
       userList: userList,
       path: [],
-      historyPath: []
+      historyPath: [],
+      scaleVal: 0.6,
     }
   },
   computed: {
     ...mapGetters(['nodeSelected']),
     displayPath: function(){ return this.historyPath.join(" > ")},
+    zoomScale(){ return `transform: translate(-50%, -50%) scale(${this.scaleVal});`}
   },
   watch:{ 
     nodeSelected: function(val){ this.findTarget(this.tree, val) },
@@ -42,9 +51,6 @@ export default {
       this.updateTree()
       this.recordPath()
     },
-  },
-  updated(){
-
   },
   methods: {
     recordPath(){
@@ -97,7 +103,13 @@ export default {
         }
       }
     },
-    
+    zoomIn(){
+      this.scaleVal = this.scaleVal - 0.1
+
+    },
+    zoomOut(){
+      this.scaleVal = this.scaleVal + 0.1
+    }
   }
 }
 </script>
@@ -114,23 +126,68 @@ export default {
   transform: translate(-50%, -50%); 
   width: 1000px;
   height: 800px;
+  border: 1px solid pink;
 }
 .mainContainer{
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%);
 }
+
+/* CSS for displayPath */
 
 .displayPath {
   position: absolute;
   left: 0%;
-  top: 0%
+  top: 0%;
 }
 
-.zoomTool {
-  position: absolute;
-  bottom: 0%;
-  right: 0%;
+.displayPath .pathStep {
+  display: inline-block;
+  background-color: pink;
+  border: 1px solid black;
+  border-radius: 5px;
+  margin-left: 5px;
+  padding: 0 5px;
+  cursor: pointer;
+  transition: 0.5s;
 }
+
+.displayPath .pathStep:hover {
+  background-color: rgba(238, 217, 54, 0.5);
+}
+
+/* CSS for zoom tool */
+
+.zoomTool {
+  box-sizing: border-box;
+  position: fixed;
+  top: 0%;
+  right: 0%;
+  background-color: white;
+  border: 1px solid black;
+  width: 150px;
+  height: 100px;
+  text-align: center;
+  padding: 10px 3px;
+}
+
+.zoomTool .title, .control {
+  height: 50%;
+}
+
+.zoomTool .control span {
+  display: inline-block;
+  width: 30px;
+  border: 1px solid black;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 20px;
+  transition: 0.5s;
+}
+
+.zoomTool .control span:hover{
+  background-color: rgba(238, 217, 54, 0.5);
+}
+
 </style>
