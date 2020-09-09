@@ -2,9 +2,9 @@
     <table v-bind:class="{ orgChart: true, hide: !show }" v-if="depth < 6">
         <tr>
             <td v-if="data.name !== 'empty'" :colspan="data.nodes && data.nodes.length? data.nodes.length*2 : null">
-                <div class='node' @click="updateNode(data.name)">
+                <div class="node" :style="bgColor" @click="updateNode(data.name)">
                     <div class="title">
-                        <img src="@/assets/diamond_gfc.svg" >
+                        <img v-if="data.title" :src="data.title" >
                         <span>昇格まで A 14人 B 25人</span>
                     </div>
                     <div class="topLevel" >
@@ -37,10 +37,19 @@
             </td>
             <td v-else :colspan="data.nodes && data.nodes.length? data.nodes.length*2 : null">
                 <div class="node">
-                    <div class="emptyUser"><span>空いてます</span></div>
+                    <div class="emptyUser">
+                        <span v-if="!newUser">空いてます</span>
+                        <span v-else>{{ newUser }}</span>
+                    </div>
                     <div class="emptyUserSelect">
                         <b-dropdown id="dropdown-1" text="ユーザー選択" class="m-md-2">
-                            <b-dropdown-item v-for="(user, index) in userList" :key="index">{{user}}</b-dropdown-item>
+                            <b-dropdown-item 
+                                v-for="(user, index) in userList" 
+                                :key="index"
+                                @click="selectNewUser(user)"
+                            >
+                                {{user}}
+                            </b-dropdown-item>
                         </b-dropdown>
                     </div>
                     <div class="emptyUserAdd"><button type="button" class="btn btn-primary">メンバー追加</button></div>
@@ -79,17 +88,22 @@ export default {
     data(){
         return {
             showChildren: this.show,
+            newUser: ""
         }
     },
     computed: {
         buttonDisplay: function(){ return this.showChildren ? 'CLOSE' : 'OPEN' },
         countDepth: function(){ return this.depth+1 },
+        bgColor: function(){ return `background-color: ${this.data.bgcolor};` }
     },
     methods: {
         changeShow(){
             this.showChildren = !this.showChildren
         },
-         ...mapMutations(['updateNode', 'nodeDisplay']),
+        selectNewUser(user){
+            this.newUser = user
+        },
+         ...mapMutations(['updateNode']),
         }
 }
 </script>
@@ -119,15 +133,16 @@ export default {
     padding: 5px 5px;
     text-align: center;
     display: inline-block;
-    width: 200px;
-    height: 230px;
+    width: 300px;
+    height: 250px;
     border: 1px solid black;
     cursor: pointer;
     transition: 0.5s;
+    margin: 0 10px;
 }
 
 .orgChart .node:hover {
-    background-color: rgba(238, 217, 54, 0.5);
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.42);
 }
 
 /* CSS for node internal layout */
@@ -138,13 +153,12 @@ export default {
 }
 
 .orgChart .node .title img {
-    width: 30%;
+    width: 40%;
 }
 
 .orgChart .node .title span {
     display: inline-block;
-    width: 70%;
-    font-size: 12px;
+    width: 60%;
     text-align: right;
 }
 
@@ -221,9 +235,12 @@ export default {
 .orgChart .node .emptyUser {
     height: 50%;
     position: relative;
+    font-size: 18px;
 }
 
 .orgChart .node .emptyUser span {
+    display: inline-block;
+    width: 100%;
     position: absolute;
     top: 50%;
     transform: translate(-50%, -50%);

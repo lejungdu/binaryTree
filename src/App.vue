@@ -9,13 +9,17 @@
       />
     </div>
     <div class="displayPath">
-      <span class="pathStep" v-for="(item, index) in historyPath" :key="index">
+      <span class="pathStep" v-for="(item, index) in historyPath" :key="index" @click="historyPathChange(item)" >
         {{ item }}
       </span>
     </div>
     <div class="zoomTool">
-      <div class="title">ZOOM Control</div>
-      <div class="control"><span @click="zoomIn">-</span><span @click="zoomOut">+</span></div>
+      <div class="title">ZOOM</div>
+      <div class="control">
+        <span @click="zoomIn"><font-awesome-icon icon="minus" /></span>
+        <span @click="zoomOut"><font-awesome-icon icon="plus" /></span>
+      </div>
+      
     </div>
   </div>
 </template>
@@ -24,20 +28,18 @@
 import tree from './tree'
 import userList from './userList'
 import TableTree from './components/TableTree'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: 'App',
-  components: {
-    TableTree
-  },
+  components: { TableTree },
   data: function() {
     return{
       tree: tree,
       userList: userList,
       path: [],
       historyPath: [],
-      scaleVal: 0.6,
+      scaleVal: 0.5,
     }
   },
   computed: {
@@ -53,6 +55,7 @@ export default {
     },
   },
   methods: {
+    ...mapMutations(['updateNode']),
     recordPath(){
       if(this.historyPath === []){ this.historyPath = this.path }
       else{
@@ -71,14 +74,38 @@ export default {
         n++
       }
 
-      console.log(currentNode)
       this.tree = currentNode
+    },
+    historyPathChange(nodeName){
+      this.updateNode(nodeName)
+      var index = this.historyPath.findIndex(item => item === nodeName)
+      
+      this.historyPath = this.historyPath.slice(0, index+1)
+      this.historyPathUpdateTree()
+    },
+    historyPathUpdateTree(){
+      if(this.historyPath.length > 1){
+        var currentNode = tree
+        var n = 1
+
+        while(this.historyPath.length > n){
+          var index = currentNode.nodes.findIndex(item => item.name === this.historyPath[n])
+          currentNode = currentNode.nodes[index]
+          n++
+        }
+
+        this.tree = currentNode
+      }
+      else{
+        this.tree = tree
+        this.historyPath = []
+        this.path = []
+      }
     },
     findTarget(data, value){
       var arr = []
       arr.push(data.name)
       if(data.name === value){
-        console.log(arr)
         this.path = arr
       }
       else if(data.nodes){
@@ -92,7 +119,6 @@ export default {
     recursiveFind(data, arr, value){
       arr.push(data.name)
       if(data.name === value){
-        console.log(arr)
         this.path = arr
       }
       else if(data.nodes){
@@ -126,7 +152,6 @@ export default {
   transform: translate(-50%, -50%); 
   width: 1000px;
   height: 800px;
-  border: 1px solid pink;
 }
 .mainContainer{
   position: absolute;
@@ -145,12 +170,14 @@ export default {
 .displayPath .pathStep {
   display: inline-block;
   background-color: pink;
-  border: 1px solid black;
-  border-radius: 5px;
-  margin-left: 5px;
+  border-left: 35px solid #569cbd;
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  margin-left: 10px;
   padding: 0 5px;
   cursor: pointer;
   transition: 0.5s;
+  box-shadow: 0px 0px 7px 3px rgba(0,0,0,0.48);
 }
 
 .displayPath .pathStep:hover {
@@ -165,21 +192,26 @@ export default {
   top: 0%;
   right: 0%;
   background-color: white;
-  border: 1px solid black;
-  width: 150px;
+  border: 3px solid black;
+  width: 160px;
   height: 100px;
   text-align: center;
   padding: 10px 3px;
+  transition: 0.5s;
+}
+
+.zoomTool:hover {
+  box-shadow: 0px 0px 7px 3px rgba(0,0,0,0.48);
 }
 
 .zoomTool .title, .control {
   height: 50%;
+  font-weight: bold;
 }
 
 .zoomTool .control span {
   display: inline-block;
   width: 30px;
-  border: 1px solid black;
   border-radius: 5px;
   cursor: pointer;
   margin: 0 20px;

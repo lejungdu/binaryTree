@@ -16,9 +16,6 @@ const actions = {
 
 const mutations = {
     updateNode: (state, data) => state.nodeSelected = data,
-    nodeDisplay: () => {
-        console.log('hello')
-    }
 };
 
 export default {

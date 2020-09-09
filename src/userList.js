@@ -1,9 +1,11 @@
 let userList = [
-  "Codey Du",
-  "Takamatsu Kenichi",
-  "Kim Seong Hyun",
-  "John Smith",
-  "Ricardo Garcia II",
+  "Chicago",
+  "Beijing",
+  "Hong Kong",
+  "Singapore",
+  "Manila",
+  "Rome",
+  "Tel Avir"
 ]
 
 export default userList;
