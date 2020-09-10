@@ -22,42 +22,42 @@ const img = [
   "準本部", // 準本部
 ]
 
-function randomNumber0_99(){ // randon number for 会員番号
-  return Math.floor(Math.random()*100)
+function randomNumberMember(){ // randon number for 会員番号
+  return Math.floor(Math.random()*10000000)
 }
 
 let tree = {
   name: 'root',
-  number: randomNumber0_99(),
+  number: randomNumberMember(),
   bgcolor: color[randomNumberColor()],
   title: require(`@/assets/diamond_${img[randomNumberImg()]}.svg`),
   nodes: [
     { 
       name: 'New York',
-      number: randomNumber0_99(),
+      number: randomNumberMember(),
       bgcolor: color[randomNumberColor()],
       title: require(`@/assets/diamond_${img[randomNumberImg()]}.svg`),
       nodes: [
         { 
           name: 'Hanoi',
-          number: randomNumber0_99(),
+          number: randomNumberMember(),
           bgcolor: color[randomNumberColor()],
           title: require(`@/assets/diamond_${img[randomNumberImg()]}.svg`),
           nodes: [
             { 
               name: 'Seoul',
-              number: randomNumber0_99(),
+              number: randomNumberMember(),
               bgcolor: color[randomNumberColor()],
               title: require(`@/assets/diamond_${img[randomNumberImg()]}.svg`),
               nodes: [
                 {
-                  name: 'Shanghai', number: randomNumber0_99(), 
+                  name: 'Shanghai', number: randomNumberMember(), 
                   bgcolor: color[randomNumberColor()], 
                   title: require(`@/assets/diamond_${img[randomNumberImg()]}.svg`),
                 },
                 { 
                   name: 'Taipei', 
-                  number: randomNumber0_99(), 
+                  number: randomNumberMember(), 
                   bgcolor: color[randomNumberColor()], 
                   title: require(`@/assets/diamond_${img[randomNumberImg()]}.svg`),}
               ]
@@ -67,19 +67,19 @@ let tree = {
         },
         {
           name: 'Tokyo',
-          number: randomNumber0_99(),
+          number: randomNumberMember(),
           bgcolor: color[randomNumberColor()],
           title: require(`@/assets/diamond_${img[randomNumberImg()]}.svg`),
           nodes: [
             { 
               name: 'Osaka', 
-              number: randomNumber0_99(), 
+              number: randomNumberMember(), 
               bgcolor: color[randomNumberColor()], 
               title: require(`@/assets/diamond_${img[randomNumberImg()]}.svg`),
             },
             { 
               name: 'London', 
-              number: randomNumber0_99(), 
+              number: randomNumberMember(), 
               bgcolor: color[randomNumberColor()], 
               title: require(`@/assets/diamond_${img[randomNumberImg()]}.svg`),
             }
@@ -89,36 +89,36 @@ let tree = {
     },
     { 
       name: 'Busan',
-      number: randomNumber0_99(),
+      number: randomNumberMember(),
       bgcolor: color[randomNumberColor()],
       title: require(`@/assets/diamond_${img[randomNumberImg()]}.svg`),
       nodes: [
         {
           name: 'L.A.',
-          number: randomNumber0_99(),
+          number: randomNumberMember(),
           bgcolor: color[randomNumberColor()],
           title: require(`@/assets/diamond_${img[randomNumberImg()]}.svg`),
           nodes: [
             { 
               name: 'Vancouver', 
-              number: randomNumber0_99(), 
+              number: randomNumberMember(), 
               bgcolor: color[randomNumberColor()], 
               title: require(`@/assets/diamond_${img[randomNumberImg()]}.svg`),
             },
             { name: 'Paris', 
-              number: randomNumber0_99(),
+              number: randomNumberMember(),
               bgcolor: color[randomNumberColor()],
               title: require(`@/assets/diamond_${img[randomNumberImg()]}.svg`),
               nodes: [
                 {
                   name: 'Berlin',
-                  number: randomNumber0_99(),
+                  number: randomNumberMember(),
                   bgcolor: color[randomNumberColor()],
                   title: require(`@/assets/diamond_${img[randomNumberImg()]}.svg`),
                   nodes: [
                     {
                       name: 'Moscow',
-                      number: randomNumber0_99(),
+                      number: randomNumberMember(),
                       bgcolor: color[randomNumberColor()],
                       title: require(`@/assets/diamond_${img[randomNumberImg()]}.svg`),
                     }

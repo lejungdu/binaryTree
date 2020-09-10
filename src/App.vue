@@ -1,40 +1,37 @@
 <template>
   <div class="app">
     <div class='mainContainer' :style="zoomScale">
-      <TableTree 
-        :data='tree'
-        :depth=1
-        :show=true
-        :userList='userList'
-      />
+      <TableTree :data='tree' :depth=1 :show=true :userList='userList' />
     </div>
-    <div class="displayPath">
-      <span class="pathStep" v-for="(item, index) in historyPath" :key="index" @click="historyPathChange(item)" >
-        {{ item }}
-      </span>
-    </div>
-    <div class="zoomTool">
-      <div class="title">ZOOM</div>
-      <div class="control">
-        <span @click="zoomIn"><font-awesome-icon icon="minus" /></span>
-        <span @click="zoomOut"><font-awesome-icon icon="plus" /></span>
-      </div>
-      
-    </div>
+    <DisplayPath 
+      :historyPath='historyPath' 
+      :treeOriginal='treeOriginal' 
+      @restore-tree="restoreTree" 
+      @update-tree="tree = $event"
+      @update-history-path="historyPath = $event" />
+    <ZoomPanel 
+      :scaleVal='scaleVal' 
+      @new-scale-value="scaleVal = $event" />
+    <SearchBar
+      :treeOriginal='treeOriginal' />
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import tree from './tree'
 import userList from './userList'
 import TableTree from './components/TableTree'
-import { mapGetters, mapMutations } from 'vuex'
+import SearchBar from './components/SearchBar'
+import DisplayPath from './components/DisplayPath'
+import ZoomPanel from './components/ZoomPanel'
 
 export default {
   name: 'App',
-  components: { TableTree },
+  components: { TableTree, DisplayPath, ZoomPanel, SearchBar },
   data: function() {
     return{
+      treeOriginal: tree,
       tree: tree,
       userList: userList,
       path: [],
@@ -55,7 +52,6 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(['updateNode']),
     recordPath(){
       if(this.historyPath === []){ this.historyPath = this.path }
       else{
@@ -76,31 +72,10 @@ export default {
 
       this.tree = currentNode
     },
-    historyPathChange(nodeName){
-      this.updateNode(nodeName)
-      var index = this.historyPath.findIndex(item => item === nodeName)
-      
-      this.historyPath = this.historyPath.slice(0, index+1)
-      this.historyPathUpdateTree()
-    },
-    historyPathUpdateTree(){
-      if(this.historyPath.length > 1){
-        var currentNode = tree
-        var n = 1
-
-        while(this.historyPath.length > n){
-          var index = currentNode.nodes.findIndex(item => item.name === this.historyPath[n])
-          currentNode = currentNode.nodes[index]
-          n++
-        }
-
-        this.tree = currentNode
-      }
-      else{
+    restoreTree(){
         this.tree = tree
         this.historyPath = []
         this.path = []
-      }
     },
     findTarget(data, value){
       var arr = []
@@ -129,13 +104,6 @@ export default {
         }
       }
     },
-    zoomIn(){
-      this.scaleVal = this.scaleVal - 0.1
-
-    },
-    zoomOut(){
-      this.scaleVal = this.scaleVal + 0.1
-    }
   }
 }
 </script>
@@ -157,69 +125,6 @@ export default {
   position: absolute;
   left: 50%;
   top: 50%;
-}
-
-/* CSS for displayPath */
-
-.displayPath {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-}
-
-.displayPath .pathStep {
-  display: inline-block;
-  background-color: pink;
-  border-left: 35px solid #569cbd;
-  border-top: 15px solid transparent;
-  border-bottom: 15px solid transparent;
-  margin-left: 10px;
-  padding: 0 5px;
-  cursor: pointer;
-  transition: 0.5s;
-  box-shadow: 0px 0px 7px 3px rgba(0,0,0,0.48);
-}
-
-.displayPath .pathStep:hover {
-  background-color: rgba(238, 217, 54, 0.5);
-}
-
-/* CSS for zoom tool */
-
-.zoomTool {
-  box-sizing: border-box;
-  position: fixed;
-  top: 0%;
-  right: 0%;
-  background-color: white;
-  border: 3px solid black;
-  width: 160px;
-  height: 100px;
-  text-align: center;
-  padding: 10px 3px;
-  transition: 0.5s;
-}
-
-.zoomTool:hover {
-  box-shadow: 0px 0px 7px 3px rgba(0,0,0,0.48);
-}
-
-.zoomTool .title, .control {
-  height: 50%;
-  font-weight: bold;
-}
-
-.zoomTool .control span {
-  display: inline-block;
-  width: 30px;
-  border-radius: 5px;
-  cursor: pointer;
-  margin: 0 20px;
-  transition: 0.5s;
-}
-
-.zoomTool .control span:hover{
-  background-color: rgba(238, 217, 54, 0.5);
 }
 
 </style>

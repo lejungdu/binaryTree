@@ -1,12 +1,8 @@
-import data from '../../tree'
-
 const state = {
-    data: data,
     nodeSelected: ''
 };
 
 const getters = {
-    data:         state => state.data,
     nodeSelected: state => state.nodeSelected
 };
 
