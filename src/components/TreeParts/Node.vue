@@ -65,7 +65,7 @@ export default {
 
 /* CSS for node internal layout */
 
-/* topLevel layout */
+/* title layout */
 .node .title {
     margin-bottom: 3px;
 }
@@ -80,6 +80,7 @@ export default {
     text-align: right;
 }
 
+/* topLevel layout */
 .node .topLevel {
     border: 1px solid black;
 }

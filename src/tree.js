@@ -132,6 +132,12 @@ let tree = {
         { name: 'empty'}
       ]
     },
+    {
+      name: 'Houston',
+      number: randomNumberMember(),
+      bgcolor: color[randomNumberColor()],
+      title: require(`@/assets/diamond_${img[randomNumberImg()]}.svg`),
+    }
   ]
 }
 
